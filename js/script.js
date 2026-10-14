@@ -1,10 +1,54 @@
 $(function () {
+    const $altura = $('#altura');
+    const $peso = $('#peso');
     const $calcular = $('#calcular');
     const $resultado = $('#resultado');
 
+    $altura.on('input', function () {
+        let valor = $(this).val().replace(',', '.');
+        valor = valor.replace(/[^0-9.]/g, '');
+
+        const partes = valor.split('.');
+        if (partes.length > 2) {
+            valor = partes.shift() + '.' + partes.join('');
+        }
+
+        if (valor.length > 0) {
+            const primeiroPonto = valor.indexOf('.');
+            if (primeiroPonto !== -1) {
+                const inteiro = valor.slice(0, primeiroPonto);
+                const decimal = valor.slice(primeiroPonto + 1).slice(0, 2);
+                valor = inteiro + '.' + decimal;
+            }
+        }
+
+        $(this).val(valor);
+    });
+
+    $peso.on('input', function () {
+        let valor = $(this).val().replace(',', '.');
+        valor = valor.replace(/[^0-9.]/g, '');
+
+        const partes = valor.split('.');
+        if (partes.length > 2) {
+            valor = partes.shift() + '.' + partes.join('');
+        }
+
+        if (valor.length > 0) {
+            const primeiroPonto = valor.indexOf('.');
+            if (primeiroPonto !== -1) {
+                const inteiro = valor.slice(0, primeiroPonto);
+                const decimal = valor.slice(primeiroPonto + 1).slice(0, 2);
+                valor = inteiro + '.' + decimal;
+            }
+        }
+
+        $(this).val(valor);
+    });
+
     $calcular.on('click', function () {
-        const altura = Number($('#altura').val());
-        const peso = Number($('#peso').val());
+        const altura = Number($altura.val().replace(',', '.'));
+        const peso = Number($peso.val().replace(',', '.'));
 
         if (!altura || !peso || altura <= 0 || peso <= 0) {
             $resultado
