@@ -1,106 +1,131 @@
 <!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-	<title>Calculadora IMC</title>
-	<style>
-		body {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 100vh;
-			font-family: Arial;
-			background: #ccc
-		}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora IMC</title>
 
-		div {
-			display: flex;
-			flex-direction: column;
-			width: 400px;
-			border: 1px solid #fafafa;
-			padding: 15px 25px;
-			border-radius: 10px;
-			background: #ccc;
-		}
-		h1{
-			text-align: center;
-		}
-		input {
-			height: 25px;
-			margin-bottom; 10px;
-			padding: 0 5px;
-		}
-		button {
-			height: 50px;
-			front-size: 15px;
-			text-transform: uppercase;
-			font-weight: 700;
-			margin: 15px 0;
-			border: 0;  
-			border-radius: 10px;
-			background: #020c81;
-			color: #fff;
-			cursor: pointer;
-		}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f8fafc 100%);
+            font-family: Arial, sans-serif;
+        }
 
-	</style>
+        .card {
+            width: min(100%, 430px);
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #0d6efd, #2563eb);
+            color: #fff;
+            border-bottom: none;
+            border-radius: 20px 20px 0 0 !important;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            border: none;
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            font-weight: 700;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+        }
+
+        .resultado {
+            display: none;
+            margin-top: 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .resultado.visible {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-	<div>
-		<h1>Calculadora de IMC</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h1 class="h3 mb-0">Calculadora de IMC</h1>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <label for="altura" class="form-label">Altura (m)</label>
+                            <input type="number" id="altura" class="form-control" min="0.5" step="0.01" placeholder="Ex.: 1.75" />
+                        </div>
 
-		<label for="altura">Digite sua altura:</label>
-		<input type="number" id="altura">
+                        <div class="mb-3">
+                            <label for="peso" class="form-label">Peso (kg)</label>
+                            <input type="number" id="peso" class="form-control" min="1" step="0.1" placeholder="Ex.: 70.5" />
+                        </div>
 
-		<label for="peso">Digite seu peso:</label>
-		<input type="number" id="peso">
+                        <button id="calcular" class="btn btn-primary w-100">Calcular</button>
 
-		<button id="calcular">Calcular</button>
-	</div>
+                        <div id="resultado" class="resultado alert"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<script>
-		var calcular = document.getElementById("calcular");
-		calcular.addEventListener("click", () => { 
+    <script>
+        const calcular = document.getElementById("calcular");
+        const resultado = document.getElementById("resultado");
 
-			//obter altura
-			var altura = +document.getElementById("altura").value;
+        calcular.addEventListener("click", () => {
+            const altura = Number(document.getElementById("altura").value);
+            const peso = Number(document.getElementById("peso").value);
 
-			//obter peso
-			var peso = +document.getElementById("peso").value;
+            if (!altura || !peso || altura <= 0 || peso <= 0) {
+                resultado.className = "resultado visible alert alert-danger";
+                resultado.textContent = "Informe valores válidos de altura e peso.";
+                return;
+            }
 
-			//calcular o IMC, utilizando a altura e o peso informado
-			var imc = peso / (altura * altura);
+            const imc = peso / (altura * altura);
+            let situacao = "";
 
-			//com o imc calculado, encontrar a situação na tabela. se o resultado for:
-			var situacao = "";
+            if (imc < 17) {
+                situacao = "Muito abaixo do peso";
+            } else if (imc >= 17 && imc <= 18.49) {
+                situacao = "Abaixo do peso";
+            } else if (imc >= 18.5 && imc <= 24.99) {
+                situacao = "Peso normal";
+            } else if (imc >= 25 && imc <= 29.99) {
+                situacao = "Sobrepeso";
+            } else if (imc >= 30 && imc <= 34.99) {
+                situacao = "Obesidade I";
+            } else if (imc >= 35 && imc <= 39.99) {
+                situacao = "Obesidade II";
+            } else {
+                situacao = "Obesidade III";
+            }
 
-			//abaixo de 17 então a situação é Muito abaixo do peso
-			if (imc < 17)
-				situacao = "muito abaixo do peso";
-			//entre 17 e 18,49 então a situação é Abaixo do peso
-			else if (imc >=17 && imc <=18.49)
-				situacao = "Abaixo do peso";
-			// entre 18,50 e 24,99 então a situação é normal
-			else if (imc >= 18.5 && imc <= 24.99)
-				situacao = "normal";
-			//entre 25 e 29,99 então a situação é Sobrepeso
-			else if (imc >=25 && imc <=29.99)
-				situacao = "Sobrepeso";
-			// entre 30 e 34,99 então a situação é obesidade I
-			else if (imc >= 30 && imc <= 34.99)
-				situacao = "obesidade I";
-			//entre 35 e 39,99 então a situação é Obesidade II
-			else if (imc >=35 && imc <=39.99)
-				situacao = "Obesidade II";
-			// acima de 40 então a situação é obesidade III
-			else if (imc >=40)
-				situacao = "Obesidade III";
+            resultado.className = "resultado visible alert alert-info";
+            resultado.innerHTML = `<strong>IMC:</strong> ${imc.toFixed(2)}<br><strong>Situação:</strong> ${situacao}`;
+        });
+    </script>
+</body>
+</html>
 
-			//exibir situação
-			alert(situacao)
-
-
-			//
-		});
-		
-
-	</script>
-<body>
