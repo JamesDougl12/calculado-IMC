@@ -1,0 +1,52 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e0f2fe 0%, #f8fafc 100%);
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    width: min(100%, 430px);
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #0d6efd, #2563eb);
+    color: #fff;
+    border-bottom: none;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 1.25rem 1.5rem;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #334155;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border: none;
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    font-weight: 700;
+    transition: transform 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+.resultado {
+    display: none;
+    margin-top: 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.resultado.visible {
+    display: block;
+}
